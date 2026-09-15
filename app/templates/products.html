@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block title %}Shop — MyShop{% endblock %}
+{% block content %}
+<section class="shop-page">
+    <div class="container">
+        <div class="shop-heading">
+            <div><span class="section-kicker">Our store</span><h1>Find something you’ll love.</h1><p>Browse the latest products and add your favorites to your bag.</p></div>
+        </div>
+
+        <form method="get" action="/products" class="shop-toolbar" style="flex-wrap: wrap; row-gap: 12px;">
+            <div class="shop-search"><i class="bi bi-search"></i><input id="product-search" name="search" type="search" placeholder="Search products..." value="{{ filters.search }}"></div>
+
+            <select id="category-filter" name="category" class="shop-filter" onchange="this.form.submit()">
+                <option value="all" {% if filters.category == 'all' %}selected{% endif %}>All categories</option>
+                {% for cat in categories %}
+                <option value="{{ cat }}" {% if filters.category == cat %}selected{% endif %}>{{ cat|capitalize }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="sort" class="shop-filter" onchange="this.form.submit()">
+                <option value="newest" {% if filters.sort == 'newest' %}selected{% endif %}>Newest first</option>
+                <option value="oldest" {% if filters.sort == 'oldest' %}selected{% endif %}>Oldest first</option>
+                <option value="price_asc" {% if filters.sort == 'price_asc' %}selected{% endif %}>Price: low to high</option>
+                <option value="price_desc" {% if filters.sort == 'price_desc' %}selected{% endif %}>Price: high to low</option>
+            </select>
+
+            <div class="qty-wrap" style="width: 110px;">
+                <input type="number" name="min_price" placeholder="Min $" min="0" step="0.01" value="{{ filters.min_price if filters.min_price is not none else '' }}">
+            </div>
+            <div class="qty-wrap" style="width: 110px;">
+                <input type="number" name="max_price" placeholder="Max $" min="0" step="0.01" value="{{ filters.max_price if filters.max_price is not none else '' }}">
+            </div>
+
+            <label class="secondary-button" style="cursor: pointer; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                <input type="checkbox" name="in_stock" value="true" {% if filters.in_stock %}checked{% endif %} style="width: 16px; height: 16px;">
+                In stock only
+            </label>
+
+            <button type="submit" class="primary-button">Apply</button>
+            {% if filters.search or filters.category != 'all' or filters.min_price or filters.max_price or filters.in_stock %}
+            <a href="/products" class="secondary-button">Clear filters</a>
+            {% endif %}
+        </form>
+
+        <div id="products-container" class="row g-4">
+            {% for product in products %}
+            <div class="col-sm-6 col-lg-4 col-xl-3 product-item" data-name="{{ product.name|lower }}" data-category="{{ (product.category or '')|lower }}">
+                <article class="product-card">
+                    <a href="/products/{{ product.id }}" class="product-media">
+                        {% if product.image_url %}<img src="{{ product.image_url }}" alt="{{ product.name }}">{% else %}<div class="product-placeholder"><i class="bi bi-image"></i></div>{% endif %}
+                        <span class="product-chip">{{ product.category or 'New' }}</span>
+                        {% if product.stock <= 0 %}<span class="sold-out-chip">Sold out</span>{% endif %}
+                    </a>
+                    <div class="product-card-body">
+                        <a href="/products/{{ product.id }}" class="product-name">{{ product.name }}</a>
+                        <p>{{ product.description or 'A great addition to your collection.' }}</p>
+                        <div class="product-card-bottom"><strong>${{ '%.2f'|format(product.price) }}</strong><a href="/products/{{ product.id }}" class="round-arrow" aria-label="View product"><i class="bi bi-arrow-up-right"></i></a></div>
+                    </div>
+                </article>
+            </div>
+            {% else %}
+            <div class="col-12"><div class="empty-home"><i class="bi bi-box-seam"></i><h3>No products match your filters</h3><p>Try adjusting your search, category, or price range.</p><a href="/products" class="primary-button">Clear filters</a></div></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="MyShop — modern online shopping built with FastAPI.">
+    <title>{% block title %}MyShop{% endblock %}</title>
+
+    <script>
+        (() => {
+            const theme = localStorage.getItem("myshop-theme") || "light";
+            document.documentElement.dataset.theme = theme;
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/main.css') }}">
+</head>
+<body>
+
+<header class="site-header">
+    <nav class="navbar navbar-expand-lg shop-navbar">
+        <div class="container py-2">
+            <a class="navbar-brand shop-brand" href="/">
+                <span class="brand-mark"><i class="bi bi-bag-heart-fill"></i></span>
+                <span>My<span class="brand-accent">Shop</span></span>
+            </a>
+
+            <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav mx-auto nav-menu">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/products">Shop</a></li>
+                    {% if request.session.get("user_id") %}
+                    <li class="nav-item"><a class="nav-link" href="/orders">Orders</a></li>
+                    {% endif %}
+                </ul>
+
+                <div class="nav-actions">
+                    <button id="theme-toggle" class="icon-action" type="button" aria-label="Toggle dark mode" title="Toggle theme">
+                        <i class="bi bi-moon-stars-fill"></i>
+                    </button>
+
+                    {% if request.session.get("user_id") %}
+                    <a href="/cart" class="icon-action position-relative" aria-label="Shopping cart" title="Cart">
+                        <i class="bi bi-bag"></i>
+                        <span id="cart-count" class="cart-count">0</span>
+                    </a>
+                    <div class="dropdown">
+                        <button class="account-button dropdown-toggle" data-bs-toggle="dropdown" type="button">
+                            <span class="account-avatar"><i class="bi bi-person-fill"></i></span>
+                            <span class="d-none d-xl-inline">{{ request.session.get("username") }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shop-dropdown">
+                            <li><a class="dropdown-item" href="/orders"><i class="bi bi-receipt"></i> My Orders</a></li>
+                            <li><a class="dropdown-item" href="/cart"><i class="bi bi-bag"></i> Cart</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item danger-item" href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a href="/login" class="login-link">Login</a>
+                    <a href="/register" class="signup-button">Create account</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="shop-footer">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-5">
+                <a class="footer-brand" href="/"><span class="brand-mark"><i class="bi bi-bag-heart-fill"></i></span> My<span class="brand-accent">Shop</span></a>
+                <p class="footer-intro">A clean, modern shopping experience powered by FastAPI, SQLAlchemy and PostgreSQL.</p>
+                <div class="footer-socials">
+                    <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" aria-label="GitHub"><i class="bi bi-github"></i></a>
+                </div>
+            </div>
+            <div class="col-6 col-lg-2">
+                <h6>Shop</h6>
+                <a href="/products">All products</a>
+                <a href="/cart">Cart</a>
+                {% if request.session.get("user_id") %}<a href="/orders">My orders</a>{% endif %}
+            </div>
+            <div class="col-6 col-lg-2">
+                <h6>Account</h6>
+                {% if request.session.get("user_id") %}
+                <a href="/orders">My account</a>
+                <a href="/logout">Logout</a>
+                {% else %}
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+                {% endif %}
+            </div>
+            <div class="col-lg-3">
+                <h6>Need help?</h6>
+                <p class="footer-help">Browse the shop, add your favorites to the cart and checkout when you're ready.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 MyShop. All rights reserved.</span>
+            <span>Built with FastAPI</span>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', path='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

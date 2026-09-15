@@ -1,0 +1,6 @@
+{% extends "layout.html" %}
+{% block title %}My orders — MyShop{% endblock %}
+{% block content %}
+<section class="orders-page"><div class="container"><div class="shop-heading compact"><div><span class="section-kicker">Your account</span><h1>My orders</h1><p>Everything you've checked out with us.</p></div><a href="/products" class="secondary-button">Keep shopping</a></div>
+{% if orders %}<div class="orders-list">{% for order in orders %}<a href="/orders/{{ order.id }}" class="order-row"><div class="order-main"><span class="order-number">Order #{{ order.id }}</span><strong>{{ order.status|title }}</strong></div><div class="order-meta"><strong>${{ '%.2f'|format(order.total_price) }}</strong><i class="bi bi-arrow-up-right"></i></div></a>{% endfor %}</div>{% else %}<div class="empty-home"><i class="bi bi-receipt"></i><h3>No orders yet</h3><p>Your completed orders will show up here.</p><a href="/products" class="primary-button">Shop now <i class="bi bi-arrow-right"></i></a></div>{% endif %}</div></section>
+{% endblock %}

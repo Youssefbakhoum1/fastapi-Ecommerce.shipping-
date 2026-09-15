@@ -1,0 +1,5 @@
+{% extends "layout.html" %}
+{% block title %}Users — MyShop{% endblock %}
+{% block content %}
+<section class="admin-page"><div class="container"><div class="shop-heading compact"><div><span class="section-kicker">Admin</span><h1>Users</h1><p>Manage accounts stored in PostgreSQL.</p></div><a href="/users/add" class="primary-button">Add user <i class="bi bi-plus"></i></a></div><div class="admin-panel"><div class="table-responsive"><table class="shop-table"><thead><tr><th>ID</th><th>Username</th><th>Email</th></tr></thead><tbody>{% for user in users %}<tr><td>#{{ user.id }}</td><td><strong>{{ user.username }}</strong></td><td>{{ user.email }}</td></tr>{% else %}<tr><td colspan="3" class="empty-table">No users yet.</td></tr>{% endfor %}</tbody></table></div></div></div></section>
+{% endblock %}

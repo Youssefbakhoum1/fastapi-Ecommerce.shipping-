@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block title %}MyShop — Shop smarter{% endblock %}
+{% block content %}
+
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="eyebrow"><i class="bi bi-stars"></i> New season arrivals</span>
+                <h1>Everything you need.<br><span>One beautiful shop.</span></h1>
+                <p class="hero-copy">Discover products you’ll love, add them to your bag, and checkout in a few clicks.</p>
+                <div class="hero-actions">
+                    <a href="/products" class="primary-button">Shop now <i class="bi bi-arrow-right"></i></a>
+                    <a href="#featured" class="secondary-button">Explore collection</a>
+                </div>
+                <div class="hero-trust">
+                    <div><i class="bi bi-check-circle-fill"></i><span>Easy shopping</span></div>
+                    <div><i class="bi bi-shield-check"></i><span>Secure accounts</span></div>
+                    <div><i class="bi bi-lightning-charge-fill"></i><span>Fast checkout</span></div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-visual">
+                    <div class="hero-glow"></div>
+                    <div class="hero-card hero-card-main">
+                        <div class="hero-card-top"><span>Featured</span><i class="bi bi-heart"></i></div>
+                        <div class="hero-product-art"><i class="bi bi-bag-heart-fill"></i></div>
+                        <div class="hero-card-info"><span>MyShop collection</span><strong>Shop the look</strong></div>
+                    </div>
+                    <div class="floating-card floating-card-one"><i class="bi bi-cart-check-fill"></i><div><strong>Easy checkout</strong><span>Ready in a few clicks</span></div></div>
+                    <div class="floating-card floating-card-two"><i class="bi bi-stars"></i><div><strong>Curated products</strong><span>Made for your style</span></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="featured" class="featured-section">
+    <div class="container">
+        <div class="section-heading">
+            <div><span class="section-kicker">Featured</span><h2>Shop our latest picks</h2><p>Fresh products ready for your next order.</p></div>
+            <a href="/products" class="text-link">View all <i class="bi bi-arrow-right"></i></a>
+        </div>
+
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-sm-6 col-lg-3">
+                <a href="/products/{{ product.id }}" class="featured-card">
+                    <div class="featured-image-wrap">
+                        {% if product.image_url %}
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}" class="featured-image">
+                        {% else %}
+                        <div class="featured-image placeholder-product"><i class="bi bi-image"></i></div>
+                        {% endif %}
+                        <span class="mini-badge">{{ product.category or 'Featured' }}</span>
+                    </div>
+                    <div class="featured-info"><h3>{{ product.name }}</h3><div><strong>${{ '%.2f'|format(product.price) }}</strong><span>View <i class="bi bi-arrow-up-right"></i></span></div></div>
+                </a>
+            </div>
+            {% else %}
+            <div class="col-12"><div class="empty-home"><i class="bi bi-box-seam"></i><h3>Your store is ready</h3><p>Add products from your database and they will appear here.</p><a href="/products" class="primary-button">Browse shop</a></div></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="feature-strip">
+    <div class="container"><div class="row g-4">
+        <div class="col-md-4"><div class="feature-item"><span><i class="bi bi-truck"></i></span><div><strong>Simple delivery</strong><p>Keep the shopping flow clear and easy.</p></div></div></div>
+        <div class="col-md-4"><div class="feature-item"><span><i class="bi bi-arrow-repeat"></i></span><div><strong>Easy cart updates</strong><p>Change quantities whenever you want.</p></div></div></div>
+        <div class="col-md-4"><div class="feature-item"><span><i class="bi bi-lock"></i></span><div><strong>Account protected</strong><p>Your login is stored securely.</p></div></div></div>
+    </div></div>
+</section>
+{% endblock %}

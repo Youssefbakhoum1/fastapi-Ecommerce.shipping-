@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %}Login — MyShop{% endblock %}
+{% block content %}
+<section class="auth-page">
+    <div class="auth-shell">
+        <div class="auth-visual">
+            <span class="eyebrow"><i class="bi bi-stars"></i> Welcome back</span>
+            <h1>Pick up where you left off.</h1>
+            <p>Sign in to manage your cart, orders and saved shopping experience.</p>
+            <div class="auth-visual-points"><span><i class="bi bi-check-circle-fill"></i> Access your cart</span><span><i class="bi bi-check-circle-fill"></i> Track your orders</span><span><i class="bi bi-check-circle-fill"></i> Shop faster next time</span></div>
+        </div>
+        <div class="auth-card">
+            <div class="auth-brand"><span class="brand-mark"><i class="bi bi-bag-heart-fill"></i></span><span>My<span class="brand-accent">Shop</span></span></div>
+            <h2>Welcome back</h2><p class="auth-subtitle">Enter your details to continue.</p>
+            {% if error %}<div class="form-alert"><i class="bi bi-exclamation-circle"></i>{{ error }}</div>{% endif %}
+            <form method="post" action="/login" class="auth-form">
+                <div class="field"><label for="login-email">Email</label><div class="field-control"><i class="bi bi-envelope"></i><input id="login-email" name="email" type="email" placeholder="you@example.com" required></div></div>
+                <div class="field"><label for="login-password">Password</label><div class="field-control"><i class="bi bi-lock"></i><input id="login-password" name="password" type="password" placeholder="Enter your password" required><button type="button" class="password-toggle" data-target="login-password"><i class="bi bi-eye"></i></button></div></div>
+                <button class="primary-button auth-button" type="submit">Sign in <i class="bi bi-arrow-right"></i></button>
+            </form>
+            <p class="auth-switch">Don’t have an account? <a href="/register">Create one</a></p>
+        </div>
+    </div>
+</section>
+{% endblock %}

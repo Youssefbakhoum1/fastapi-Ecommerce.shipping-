@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}Your bag — MyShop{% endblock %}
+{% block content %}
+<section class="cart-page">
+    <div class="container">
+        <div class="shop-heading compact"><div><span class="section-kicker">Your shopping bag</span><h1>Your favorites, together.</h1><p>Review your items and continue when you're ready.</p></div><a href="/products" class="secondary-button">Continue shopping</a></div>
+        {% if items %}
+        <div class="row g-4 align-items-start">
+            <div class="col-lg-8">
+                <div class="cart-panel">
+                    {% for item in items %}
+                    <div class="cart-row">
+                        <a href="/products/{{ item.product.id }}" class="cart-product-image">{% if item.product.image_url %}<img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">{% else %}<span><i class="bi bi-image"></i></span>{% endif %}</a>
+                        <div class="cart-product-info"><span class="cart-category">{{ item.product.category or 'Product' }}</span><a href="/products/{{ item.product.id }}" class="cart-product-name">{{ item.product.name }}</a><span class="cart-product-unit">${{ '%.2f'|format(item.product.price) }} each</span></div>
+                        <form action="/cart/update/{{ item.id }}" method="post" class="cart-quantity-form"><input name="quantity" type="number" min="1" max="{{ item.product.stock }}" value="{{ item.quantity }}"><button type="submit" aria-label="Update quantity"><i class="bi bi-check2"></i></button></form>
+                        <strong class="cart-line-total">${{ '%.2f'|format(item.product.price * item.quantity) }}</strong>
+                        <form action="/cart/remove/{{ item.id }}" method="post"><button class="remove-item" type="submit" aria-label="Remove item"><i class="bi bi-trash3"></i></button></form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <aside class="summary-card"><span class="section-kicker">Summary</span><h2>Order total</h2><div class="summary-line"><span>Subtotal</span><strong>${{ '%.2f'|format(total) }}</strong></div><div class="summary-line"><span>Shipping</span><strong>Free</strong></div><div class="summary-divider"></div><div class="summary-total"><span>Total</span><strong>${{ '%.2f'|format(total) }}</strong></div><a href="/checkout" class="primary-button full-button">Proceed to checkout <i class="bi bi-arrow-right"></i></a><p class="summary-note"><i class="bi bi-shield-check"></i> Secure order flow</p></aside>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-home empty-cart"><i class="bi bi-bag"></i><h3>Your bag is empty</h3><p>Find something you love and add it to your bag.</p><a href="/products" class="primary-button">Start shopping <i class="bi bi-arrow-right"></i></a></div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

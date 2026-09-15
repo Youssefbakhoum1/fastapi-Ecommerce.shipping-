@@ -1,0 +1,5 @@
+{% extends "layout.html" %}
+{% block title %}Add user — MyShop{% endblock %}
+{% block content %}
+<section class="auth-page"><div class="auth-card admin-form-card"><div class="auth-brand"><span class="brand-mark"><i class="bi bi-person-plus-fill"></i></span><span>Add <span class="brand-accent">user</span></span></div><h2>Create a user</h2><p class="auth-subtitle">Add an account directly to the store.</p>{% if error %}<div class="form-alert"><i class="bi bi-exclamation-circle"></i>{{ error }}</div>{% endif %}<form method="post" action="/users/add" class="auth-form"><div class="field"><label>Username</label><div class="field-control"><i class="bi bi-person"></i><input name="username" required></div></div><div class="field"><label>Email</label><div class="field-control"><i class="bi bi-envelope"></i><input name="email" type="email" required></div></div><div class="field"><label>Password</label><div class="field-control"><i class="bi bi-lock"></i><input name="password" type="password" minlength="6" required></div></div><button class="primary-button auth-button">Create user <i class="bi bi-arrow-right"></i></button></form></div></section>
+{% endblock %}

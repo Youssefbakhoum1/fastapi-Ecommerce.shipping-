@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block title %}Checkout — MyShop{% endblock %}
+{% block content %}
+<section class="checkout-page">
+    <div class="container">
+        <div class="shop-heading compact"><div><span class="section-kicker">Checkout</span><h1>One last step.</h1><p>Review your order before placing it.</p></div></div>
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="summary-card"><span class="section-kicker">Your items</span><h2>Order review</h2>
+                    {% for item in items %}<div class="checkout-item"><div class="checkout-item-art">{% if item.product.image_url %}<img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">{% else %}<i class="bi bi-image"></i>{% endif %}</div><div><strong>{{ item.product.name }}</strong><span>Qty {{ item.quantity }}</span></div><strong>${{ '%.2f'|format(item.product.price * item.quantity) }}</strong></div>{% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-5"><div class="summary-card sticky-summary"><span class="section-kicker">Total</span><h2>Ready to place?</h2><div class="summary-line"><span>Subtotal</span><strong>${{ '%.2f'|format(total) }}</strong></div><div class="summary-line"><span>Shipping</span><strong>Free</strong></div><div class="summary-divider"></div><div class="summary-total"><span>Total</span><strong>${{ '%.2f'|format(total) }}</strong></div><form action="/checkout" method="post"><button class="primary-button full-button" type="submit">Place order <i class="bi bi-check2"></i></button></form></div></div>
+        </div>
+    </div>
+</section>
+{% endblock %}

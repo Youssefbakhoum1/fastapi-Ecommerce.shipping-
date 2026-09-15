@@ -1,0 +1,5 @@
+{% extends "layout.html" %}
+{% block title %}Order #{{ order.id }} — MyShop{% endblock %}
+{% block content %}
+<section class="orders-page"><div class="container"><a href="/orders" class="back-link"><i class="bi bi-arrow-left"></i> Back to orders</a><div class="shop-heading compact"><div><span class="section-kicker">Order details</span><h1>Order #{{ order.id }}</h1><p>Status: <strong>{{ order.status|title }}</strong></p></div><div class="detail-price">${{ '%.2f'|format(order.total_price) }}</div></div><div class="summary-card">{% for item in order.items %}<div class="checkout-item"><div class="checkout-item-art">{% if item.product.image_url %}<img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">{% else %}<i class="bi bi-image"></i>{% endif %}</div><div><strong>{{ item.product.name }}</strong><span>Qty {{ item.quantity }}</span></div><strong>${{ '%.2f'|format(item.price * item.quantity) }}</strong></div>{% endfor %}</div></div></section>
+{% endblock %}
